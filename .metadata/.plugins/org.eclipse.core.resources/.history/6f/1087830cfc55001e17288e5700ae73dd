@@ -1,0 +1,39 @@
+package com.userservice.service.imp;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.userservice.dto.UserDTO;
+import com.userservice.payloads.ApiResponse;
+import com.userservice.repository.UserRepository;
+import com.userservice.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Override
+	public ApiResponse createUser(UserDTO userDTO) {
+		
+		return null;
+	}
+
+	@Override
+	public ApiResponse getUserById(Integer id) {
+
+		return null;
+	}
+
+	@Override
+	public ApiResponse getAllUser() {
+		
+		return null;
+	}
+
+}

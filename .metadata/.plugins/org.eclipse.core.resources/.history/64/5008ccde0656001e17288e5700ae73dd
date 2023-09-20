@@ -1,0 +1,12 @@
+package com.prodcutservice.service.impl;
+
+import com.prodcutservice.payloads.ApiResponse;
+
+public interface ProductService {
+
+	ApiResponse createProduct(ProductDTO ProductDTO);
+
+	ApiResponse getProductById(Integer id);
+
+	ApiResponse getAllProduct();
+}

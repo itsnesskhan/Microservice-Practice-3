@@ -1,0 +1,47 @@
+package com.orderservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.orderservice.dto.OrderDTO;
+import com.orderservice.service.OrderService;
+import com.prodcutservice.payloads.ApiResponse;
+
+@RestController
+@RequestMapping("/api/v1/order")
+public class OrderController {
+
+	@Autowired
+	private OrderService OrderService;
+	
+	@PostMapping
+	public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderDTO OrderDTO){
+		ApiResponse Order = OrderService.createOrder(OrderDTO);
+		return ResponseEntity.ok(Order);
+	}
+	
+	@GetMapping
+	public ResponseEntity<ApiResponse> getAllOrder(@RequestBody OrderDTO OrderDTO){
+		ApiResponse Orders = OrderService.getAllOrder();
+		return ResponseEntity.ok(Orders);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse> getAllOrder(@PathVariable String id){
+		ApiResponse Orders = OrderService.getOrderById(id);
+		return ResponseEntity.ok(Orders);
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<ApiResponse> getAllOrderOfUser(@PathVariable Integer id){
+		ApiResponse Orders = OrderService.getAllOrderOfUser(id);
+		return ResponseEntity.ok(Orders);
+	}
+	
+}

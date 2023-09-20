@@ -1,0 +1,53 @@
+package com.userservice.service.imp;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.userservice.dto.UserDTO;
+import com.userservice.entity.User;
+import com.userservice.payloads.ApiResponse;
+import com.userservice.repository.UserRepository;
+import com.userservice.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Override
+	public ApiResponse createUser(UserDTO userDTO) {
+		User user = modelMapper.map(userDTO, User.class);
+		user = userRepository.save(user);
+		return ApiResponse.builder().data(modelMapper.map(user, UserDTO.class)).message("User Created Successfully!")
+				.build();
+	}
+
+	@Override
+	public ApiResponse getUserById(Integer id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("user does not exist with id : " + id));
+		return ApiResponse.builder()
+				.data(modelMapper.map(user, UserDTO.class))
+				.message("User with id "+id)
+				.build();
+	}
+
+	@Override
+	public ApiResponse getAllUser() {
+		List<User> users = userRepository.findAll();
+		 List<UserDTO> userDtos = Arrays.asList(modelMapper.map(users, UserDTO[].class));
+		 return ApiResponse.builder()
+				 	.data(userDtos)
+				 	.message("All users")
+				 	.build();
+	}
+
+}

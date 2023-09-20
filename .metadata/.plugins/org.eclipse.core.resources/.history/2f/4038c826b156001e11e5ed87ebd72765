@@ -1,0 +1,9 @@
+package com.orderservice.feignclient;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "Product-Service")
+public interface ProductClient {
+
+	
+}

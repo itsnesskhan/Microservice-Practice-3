@@ -1,0 +1,52 @@
+package com.orderservice.service.impl;
+import java.util.Arrays;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.prodcutservice.dto.OrderDTO;
+import com.prodcutservice.entity.Order;
+import com.prodcutservice.payloads.ApiResponse;
+import com.prodcutservice.repository.OrderRepository;
+import com.prodcutservice.service.OrderService;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	private OrderRepository OrderRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Override
+	public ApiResponse createOrder(OrderDTO OrderDTO) {
+		Order Order = modelMapper.map(OrderDTO, Order.class);
+		Order = OrderRepository.save(Order);
+		return ApiResponse.builder().data(modelMapper.map(Order, OrderDTO.class)).message("Order Created Successfully!")
+				.build();
+	}
+
+	@Override
+	public ApiResponse getOrderById(Integer id) {
+		Order Order = OrderRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Order does not exist with id : " + id));
+		return ApiResponse.builder()
+				.data(modelMapper.map(Order, OrderDTO.class))
+				.message("Order with id "+id)
+				.build();
+	}
+
+	@Override
+	public ApiResponse getAllOrder() {
+		List<Order> Orders = OrderRepository.findAll();
+		 List<OrderDTO> OrderDtos = Arrays.asList(modelMapper.map(Orders, OrderDTO[].class));
+		 return ApiResponse.builder()
+				 	.data(OrderDtos)
+				 	.message("All Orders")
+				 	.build();
+	}
+
+}

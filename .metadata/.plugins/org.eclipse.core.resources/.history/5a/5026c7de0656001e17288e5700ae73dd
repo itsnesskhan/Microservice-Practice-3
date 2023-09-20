@@ -1,0 +1,13 @@
+package com.prodcutservice.service.impl;
+
+import com.userservice.dto.UserDTO;
+import com.userservice.payloads.ApiResponse;
+
+public interface UserService {
+
+	ApiResponse createUser(UserDTO userDTO);
+	
+	ApiResponse getUserById(Integer id);
+	
+	ApiResponse getAllUser();
+}

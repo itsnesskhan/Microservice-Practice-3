@@ -1,0 +1,5 @@
+package com.prodcutservice.dto;
+
+public class ProductDTO {
+
+}

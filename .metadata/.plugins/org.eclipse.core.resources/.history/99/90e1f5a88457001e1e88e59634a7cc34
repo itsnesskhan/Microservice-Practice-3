@@ -1,0 +1,20 @@
+#APPLICATION CONFIG
+
+server.port=8999
+spring.application.name=API-GATEWAY-SERVICE
+server.servlet.context-path=gateway/api
+
+#GATEWAY ROUTING
+
+spring.cloud.gateway.routes[0].id=user-service
+spring.cloud.gateway.routes[0].uri=lb://user-service
+spring.cloud.gateway.routes[0].predicates[0]=Path=/user/**
+
+spring.cloud.gateway.routes[1].id=order-service
+spring.cloud.gateway.routes[1].uri=lb://order-service
+spring.cloud.gateway.routes[1].predicates[0]=Path=/product/**
+
+
+spring.cloud.gateway.routes[2].id=product-service
+spring.cloud.gateway.routes[2].uri=lb://product-service
+spring.cloud.gateway.routes[2].predicates[0]=Path=/product/**

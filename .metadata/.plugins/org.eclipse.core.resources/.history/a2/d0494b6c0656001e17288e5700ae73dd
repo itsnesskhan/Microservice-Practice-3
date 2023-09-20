@@ -1,0 +1,12 @@
+package com.prodcutservice.entity;
+
+public class Product {
+
+	private Integer pid;
+	
+	private String name;
+	
+	private String price;
+	
+	private String quantity;
+}

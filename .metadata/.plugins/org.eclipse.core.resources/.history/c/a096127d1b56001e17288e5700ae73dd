@@ -1,0 +1,81 @@
+package com.orderservice.service.impl;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orderservice.dto.OrderDTO;
+import com.orderservice.dto.ProductDTO;
+import com.orderservice.entity.Order;
+import com.orderservice.repository.OrderRepository;
+import com.orderservice.service.OrderService;
+import com.prodcutservice.payloads.ApiResponse;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Override
+	public ApiResponse createOrder(OrderDTO OrderDTO) {
+		Order order = modelMapper.map(OrderDTO, Order.class);
+		order.setId(UUID.randomUUID().toString());
+		order = orderRepository.save(order);
+		return ApiResponse.builder().data(modelMapper.map(order, OrderDTO.class)).message("Order Created Successfully!")
+				.build();
+	}
+
+	@Override
+	public ApiResponse getOrderById(String id) {
+		Order Order = orderRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Order does not exist with id : " + id));
+		return ApiResponse.builder()
+				.data(modelMapper.map(Order, OrderDTO.class))
+				.message("Order with id "+id)
+				.build();
+	}
+
+	@Override
+	public ApiResponse getAllOrder() {
+		List<Order> Orders = orderRepository.findAll();
+		 List<OrderDTO> OrderDtos = Arrays.asList(modelMapper.map(Orders, OrderDTO[].class));
+		 return ApiResponse.builder()
+				 	.data(OrderDtos)
+				 	.message("All Orders")
+				 	.build();
+	}
+
+	@Override
+	public ApiResponse getAllOrderOfUser(Integer id) {
+		List<Order> orders = orderRepository.findByUserId(id);
+		List<OrderDTO> ordersDtos = Arrays.asList(modelMapper.map(orders, OrderDTO[].class));
+		ordersDtos.stream().forEach(order->{
+			ApiResponse apiResponse = restTemplate.getForObject("http://localhost:8081/api/v1/product/{id}", ApiResponse.class, order.getProductId());
+			ProductDTO productDTO = objectMapper.convertValue(apiResponse.getData(), ProductDTO.class);
+			order.setProduct(productDTO);
+			
+		});
+		
+		System.out.println(ordersDtos);
+		return ApiResponse.builder()
+					.data(ordersDtos)
+					.message("All orders with user id "+id)
+					.build();
+	}
+
+}

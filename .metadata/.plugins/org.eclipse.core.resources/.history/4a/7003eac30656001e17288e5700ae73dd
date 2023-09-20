@@ -1,0 +1,13 @@
+package com.userservice.service;
+
+import com.userservice.dto.UserDTO;
+import com.userservice.payloads.ApiResponse;
+
+public interface UserService {
+
+	ApiResponse createUser(UserDTO userDTO);
+	
+	ApiResponse getUserById(Integer id);
+	
+	ApiResponse getAllUser();
+}

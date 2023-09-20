@@ -1,0 +1,12 @@
+package com.userservice.payloads;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+public class ApiResponse {
+
+	private Object data;
+	private String message;
+}

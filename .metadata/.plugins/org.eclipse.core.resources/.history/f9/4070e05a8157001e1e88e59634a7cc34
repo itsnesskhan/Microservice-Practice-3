@@ -1,0 +1,20 @@
+#APPLICATION CONFIG
+
+server.port=8999
+spring.application.name=API-GATEWAY-SERVICE
+server.servlet.context-path=api-gateway/api
+
+#GATEWAY ROUTING
+
+spring.cloud.gateway.routes[0].id=user-service
+spring.cloud.gateway.routes[0].uri=lb://user-service
+spring.cloud.gateway.routes[0].predicates[0]=Path=/user-app/api/user/**
+
+spring.cloud.gateway.routes[1].id=RATING-SERVICE
+spring.cloud.gateway.routes[1].uri=lb://RATING-SERVICE
+spring.cloud.gateway.routes[1].predicates[0]=Path=/api/v1/rating/**
+
+
+spring.cloud.gateway.routes[2].id=HOTEL-SERVICE
+spring.cloud.gateway.routes[2].uri=lb://HOTEL-SERVICE
+spring.cloud.gateway.routes[2].predicates[0]=Path=/api/v1/hotel/**

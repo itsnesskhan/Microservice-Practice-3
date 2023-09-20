@@ -1,0 +1,25 @@
+package com.orderservice.feignclient;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.orderservice.dto.ProductDTO;
+import com.prodcutservice.payloads.ApiResponse;
+
+@FeignClient(name = "Product-Service")
+public interface ProductClient {
+
+	@PostMapping
+	public ResponseEntity<ApiResponse> createProduct(@RequestBody ProductDTO ProductDTO);
+
+	@GetMapping
+	public ResponseEntity<ApiResponse> getAllProduct(@RequestBody ProductDTO ProductDTO);
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse> getAllProduct(@PathVariable Integer id);
+	
+}
